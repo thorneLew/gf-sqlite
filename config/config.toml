@@ -1,0 +1,32 @@
+# HTTP Server
+[server]
+	Address     = ":8199"
+	ServerRoot  = "public"
+	ServerAgent = "project-build"
+	LogPath     = "/tmp/log/project-build/server"
+
+# Logger.
+[logger]
+    Path        = "/tmp/log/project-build"
+    Level       = "all"
+    Stdout      = true
+
+# Template.
+[viewer]
+    Path        = "template"
+    DefaultFile = "index.html"
+    Delimiters  =  ["{{", "}}"]
+
+# Database.
+[database]
+    link  = "sqlite:./db/data.db"
+    debug = true
+    # Database logger.
+    # [database.logger]
+    #     Path   = "/tmp/log/project-build/sql"
+    #     Level  = "all"
+    #     Stdout = true
+
+[gfcli]
+    [[gfcli.gen.dao]]
+        link  = "sqlite:./db/data.db"
