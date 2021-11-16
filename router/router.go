@@ -9,10 +9,11 @@ import (
 
 func init() {
 	s := g.Server()
-	s.Group("/", func(group *ghttp.RouterGroup) {
-		group.ALL("/hello", api.Hello)
-	})
+	// s.Group("/", func(group *ghttp.RouterGroup) {
+	// 	group.ALL("/hello", api.Hello)
+	// })
 	s.Group("/api", func(group *ghttp.RouterGroup) {
-		group.ALL("project", api.Project)
+		group.ALL("/project", api.Project)
+		group.ALL("/build", api.Build)
 	})
 }

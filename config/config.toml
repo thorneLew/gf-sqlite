@@ -30,3 +30,4 @@
 [gfcli]
     [[gfcli.gen.dao]]
         link  = "sqlite:./db/data.db"
+        tables = "project"
