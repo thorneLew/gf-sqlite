@@ -4,3 +4,7 @@ package model
 type BuildApiReq struct {
 	Id string `v:"required"`
 }
+
+type BuildListApiReq struct {
+	ProjectId string `v:"required"`
+}

@@ -7,7 +7,7 @@
 
 # Logger.
 [logger]
-    Path        = "/tmp/log/project-build"
+    Path        = "./logs"
     Level       = "all"
     Stdout      = true
 
@@ -30,4 +30,4 @@
 [gfcli]
     [[gfcli.gen.dao]]
         link  = "sqlite:./db/data.db"
-        tables = "project"
+        tables = "project,build_logs"

@@ -5,6 +5,10 @@ import (
 	"project-build/app/dao"
 	"project-build/app/model"
 	"project-build/app/utils"
+	"strconv"
+
+	"github.com/gogf/gf/database/gdb"
+	"github.com/gogf/gf/frame/g"
 )
 
 var Build = buildService{}
@@ -17,16 +21,22 @@ func (s *buildService) Start(req *model.BuildApiReq) error {
 	if err != nil {
 		return err
 	}
-
 	data.Struct(&proj)
-	fmt.Println(proj.Path)
-	inWrokPath := "cd " + proj.Path + "&& pwd" + "&& yarn build"
 
-	utils.Command(inWrokPath)
+	fmt.Print(proj.Id)
+	currRow, _ := dao.BuildLogs.Insert(g.Map{
+		"ProjectId": proj.Id,
+		"status":    "0",
+	})
+	lastInsertId, _ := currRow.LastInsertId()
+
+	strId := strconv.Itoa(int(lastInsertId))
+	inWrokPath := "cd " + proj.Path + "&& pwd" + "&& yarn build"
+	go utils.Command(inWrokPath, "build", strId+".log")
+
 	// cmd := exec.Command("/bin/bash", "-c", inWrokPath)
 	// stdin, _ := cmd.StdinPipe()
 	// stdout, _ := cmd.StdoutPipe()
-
 	// if err := cmd.Start(); err != nil {
 	// 	fmt.Println("Execute failed when Start:" + err.Error())
 	// }
@@ -46,4 +56,9 @@ func (s *buildService) Start(req *model.BuildApiReq) error {
 	// fmt.Println("Execute finished:" + string(out_bytes))
 
 	return nil
+}
+
+func (s *buildService) List(projectId string) (gdb.Result, error) {
+	data, err := dao.BuildLogs.Where("project_id", projectId).All()
+	return data, err
 }

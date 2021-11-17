@@ -18,5 +18,6 @@ main
 gf-empty
 .vscode
 go.sum
-db/**
 vendor/**
+logs/**/*.log
+*.db

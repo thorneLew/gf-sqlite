@@ -20,8 +20,35 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/api.BuildApiReq"
+                            "$ref": "#/definitions/model.BuildApiReq"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "执行结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/build/list": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "打包模块"
+                ],
+                "summary": "打包列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "input ",
+                        "name": "project_id",
+                        "in": "query"
                     }
                 ],
                 "responses": {
@@ -85,7 +112,7 @@
         }
     },
     "definitions": {
-        "api.BuildApiReq": {
+        "model.BuildApiReq": {
             "type": "object",
             "properties": {
                 "id": {
