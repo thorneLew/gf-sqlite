@@ -8,6 +8,7 @@ import (
 
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/glog"
+	"github.com/hpcloud/tail"
 )
 
 var Build = buildApi{}
@@ -73,8 +74,7 @@ func (*buildApi) List(r *ghttp.Request) {
 // @param   project_id query string ""
 // @router  /api/build/info [GET]
 func (*buildApi) Info(r *ghttp.Request) {
-	project_id := r.Request.URL.Query().Get("project_id")
-	fmt.Print(project_id)
+	// project_id := r.Request.URL.Query().Get("project_id")
 	ws, err := r.WebSocket()
 	if err != nil {
 		glog.Error(err)
@@ -84,10 +84,17 @@ func (*buildApi) Info(r *ghttp.Request) {
 	for {
 		msgType, msg, err := ws.ReadMessage()
 		if err != nil {
+			fmt.Print(err.Error())
 			return
 		}
-		if err = ws.WriteMessage(msgType, msg); err != nil {
-			return
+		project_id := string(msg)
+		fmt.Print(project_id)
+		fmt.Print(msg)
+		t, _ := tail.TailFile("./logs/build/"+project_id+".log", tail.Config{Follow: true})
+		for line := range t.Lines {
+			if err = ws.WriteMessage(msgType, []byte(line.Text)); err != nil {
+				return
+			}
 		}
 	}
 }

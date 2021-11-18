@@ -4,10 +4,21 @@
     <title>gf websocket echo server</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <style>
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        p {
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
     <div class="list-group" id="divShow"></div>
+    <pre id="cmdBox" style="background: #000; color: greenyellow">
+    </pre>
     <div>
         <div><input class="form-control" id="txtContent" autofocus rows="6" placeholder="请输入发送内容"></div>
         <div><button class="btn btn-default" id="btnSend" style="margin-top:15px">发 送</button></div>
@@ -41,6 +52,7 @@
             // ws连接成功
             ws.onopen = function () {
                 showInfo("WebSocket Server [" + url +"] 连接成功！");
+                ws.send("10");
             };
             // ws连接关闭
             ws.onclose = function () {
@@ -60,7 +72,7 @@
             };
             // ws数据返回处理
             ws.onmessage = function (result) {
-                showWaring(" > " + result.data);
+                $("#cmdBox").append("<p>" + result.data + "</p>")
             };
         } catch (e) {
             alert(e.message);
@@ -79,6 +91,7 @@
             }
             $("#txtContent").val("")
             showSuccess(content);
+            console.log(content)
             ws.send(content);
         });
 
