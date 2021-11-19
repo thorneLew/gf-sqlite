@@ -6,6 +6,7 @@ import (
 	"project-build/app/service"
 	"project-build/library/response"
 
+	"github.com/gogf/gf/frame/g"
 	"github.com/gogf/gf/net/ghttp"
 	"github.com/gogf/gf/os/glog"
 	"github.com/hpcloud/tail"
@@ -45,10 +46,10 @@ func (*buildApi) Index(r *ghttp.Request) {
 		response.JsonExit(r, 1, err.Error())
 	}
 
-	if err := service.Build.Start(data); err != nil {
+	if id, err := service.Build.Start(data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
-		response.JsonExit(r, 0, "打包成功")
+		response.JsonExit(r, 0, "打包成功", g.Map{"id": id})
 	}
 }
 

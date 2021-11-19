@@ -1,6 +1,6 @@
 # HTTP Server
 [server]
-	Address     = ":8199"
+	Address     = "0.0.0.0:8199"
 	ServerRoot  = "public"
 	ServerAgent = "project-build"
 	LogPath     = "/tmp/log/project-build/server"

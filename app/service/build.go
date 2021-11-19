@@ -15,11 +15,11 @@ var Build = buildService{}
 
 type buildService struct{}
 
-func (s *buildService) Start(req *model.BuildApiReq) error {
+func (s *buildService) Start(req *model.BuildApiReq) (string, error) {
 	var proj *model.Project
 	data, err := dao.Project.One(req)
 	if err != nil {
-		return err
+		return "", err
 	}
 	data.Struct(&proj)
 
@@ -33,7 +33,7 @@ func (s *buildService) Start(req *model.BuildApiReq) error {
 	strId := strconv.Itoa(int(lastInsertId))
 	inWrokPath := "cd " + proj.Path + "&& pwd" + "&& yarn build"
 	go utils.Command(inWrokPath, "build", strId+".log")
-
+	return strId, nil
 	// cmd := exec.Command("/bin/bash", "-c", inWrokPath)
 	// stdin, _ := cmd.StdinPipe()
 	// stdout, _ := cmd.StdoutPipe()
@@ -54,8 +54,6 @@ func (s *buildService) Start(req *model.BuildApiReq) error {
 	// }
 
 	// fmt.Println("Execute finished:" + string(out_bytes))
-
-	return nil
 }
 
 func (s *buildService) List(projectId string) (gdb.Result, error) {
