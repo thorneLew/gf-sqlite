@@ -8,3 +8,8 @@ type BuildApiReq struct {
 type BuildListApiReq struct {
 	ProjectId string `v:"required"`
 }
+
+type EntityBuildList struct {
+	BuildLogs
+	Project *Project `json:"project"`
+}

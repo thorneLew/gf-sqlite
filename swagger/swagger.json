@@ -1,7 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "contact": {}
+        "contact": {},
+        "license": {}
     },
     "paths": {
         "/api/build": {
@@ -34,6 +35,26 @@
                 }
             }
         },
+        "/api/build/info": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "打包模块"
+                ],
+                "summary": "读取打包详情",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "工程id",
+                        "name": "project_id",
+                        "in": "query",
+                        "required": true
+                    }
+                ]
+            }
+        },
         "/api/build/list": {
             "get": {
                 "produces": [
@@ -46,7 +67,7 @@
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "input ",
+                        "description": "工程ID",
                         "name": "project_id",
                         "in": "query"
                     }
@@ -91,6 +112,36 @@
                 }
             }
         },
+        "/api/project/delete": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "项目管理"
+                ],
+                "summary": "删除项目",
+                "parameters": [
+                    {
+                        "description": "删除项目请求",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProjectUpdateApiReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "执行结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/project/list": {
             "get": {
                 "produces": [
@@ -100,6 +151,36 @@
                     "项目管理"
                 ],
                 "summary": "获取项目列表",
+                "responses": {
+                    "200": {
+                        "description": "执行结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/project/update": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "项目管理"
+                ],
+                "summary": "更新项目信息",
+                "parameters": [
+                    {
+                        "description": "更新请求",
+                        "name": "entity",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/model.ProjectUpdateApiReq"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "执行结果",
@@ -123,6 +204,20 @@
         "model.ProjectApiReq": {
             "type": "object",
             "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "model.ProjectUpdateApiReq": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
