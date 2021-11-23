@@ -142,6 +142,34 @@
                 }
             }
         },
+        "/api/project/info": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "项目管理"
+                ],
+                "summary": "获取单个项目",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "项目ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "执行结果",
+                        "schema": {
+                            "$ref": "#/definitions/response.JsonResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/api/project/list": {
             "get": {
                 "produces": [
@@ -204,6 +232,9 @@
         "model.ProjectApiReq": {
             "type": "object",
             "properties": {
+                "cmd": {
+                    "type": "string"
+                },
                 "name": {
                     "type": "string"
                 },
@@ -215,6 +246,9 @@
         "model.ProjectUpdateApiReq": {
             "type": "object",
             "properties": {
+                "cmd": {
+                    "type": "string"
+                },
                 "id": {
                     "type": "string"
                 },

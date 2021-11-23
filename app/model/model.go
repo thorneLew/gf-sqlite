@@ -16,6 +16,7 @@ type Project struct {
 	CreatedAt *gtime.Time `orm:"created_at" json:"createdAt"` //
 	UpdatedAt *gtime.Time `orm:"updated_at" json:"updatedAt"` //
 	DeletedAt *gtime.Time `orm:"deleted_at" json:"deletedAt"` //
+	Cmd       string      `orm:"cmd"        json:"cmd"`       //
 }
 
 // BuildLogs is the golang structure for table build_logs.

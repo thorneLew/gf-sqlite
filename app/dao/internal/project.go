@@ -26,6 +26,7 @@ type projectColumns struct {
 	CreatedAt string //
 	UpdatedAt string //
 	DeletedAt string //
+	Cmd       string //
 }
 
 // NewProjectDao creates and returns a new DAO object for table data access.
@@ -37,6 +38,7 @@ func NewProjectDao() *ProjectDao {
 		CreatedAt: "created_at",
 		UpdatedAt: "updated_at",
 		DeletedAt: "deleted_at",
+		Cmd:       "cmd",
 	}
 	return &ProjectDao{
 		C:     columns,

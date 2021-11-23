@@ -28,7 +28,7 @@ func (s *buildService) Start(req *model.BuildApiReq) (string, error) {
 	lastInsertId, _ := currRow.LastInsertId()
 
 	strId := strconv.Itoa(int(lastInsertId))
-	inWrokPath := "cd " + proj.Path + "&& pwd" + "&& yarn build"
+	inWrokPath := "cd " + proj.Path + "&& pwd" + "&& " + proj.Cmd
 	go utils.Command(inWrokPath, "build", strId+".log")
 	return strId, nil
 }
