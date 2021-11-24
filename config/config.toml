@@ -1,7 +1,7 @@
 # HTTP Server
 [server]
 	Address     = "0.0.0.0:8199"
-	ServerRoot  = "public"
+	ServerRoot  = "public/dist/"
 	ServerAgent = "project-build"
 	LogPath     = "/tmp/log/project-build/server"
 
@@ -28,6 +28,17 @@
     #     Stdout = true
 
 [gfcli]
+    [gfcli.build]
+        name = "main"
+        system = "linux"
+        arch = "386"
+        mod  = "none"
+        cgo = 0
+        version = "v1.0.0"
+        extra = ""
+        pack="public,template,config"
+
+
     [[gfcli.gen.dao]]
         link  = "sqlite:./db/data.db"
         tables = "project,build_logs"
