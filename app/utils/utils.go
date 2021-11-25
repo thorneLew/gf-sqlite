@@ -21,6 +21,7 @@ func Command(cmd string, model string, filename string) error {
 	}
 	var wg sync.WaitGroup
 
+	logger.Println(TASKSTART)
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
@@ -37,6 +38,7 @@ func Command(cmd string, model string, filename string) error {
 	}()
 	err = c.Start()
 	wg.Wait()
+	logger.Println(TASKEND)
 	return err
 }
 
