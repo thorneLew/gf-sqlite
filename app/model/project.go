@@ -12,3 +12,8 @@ type ProjectUpdateApiReq struct {
 	Path string
 	Cmd  string
 }
+
+type ProjectListAndLog struct {
+	Project
+	Logs []*BuildLogs `json:"logs"`
+}

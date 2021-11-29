@@ -19,7 +19,7 @@ type projectApi struct{}
 // @router  /api/project/list [GET]
 // @success 200 {object} response.JsonResponse "执行结果"
 func (*projectApi) List(r *ghttp.Request) {
-	data, _ := dao.Project.All()
+	data, _ := service.Project.List()
 	response.JsonExit(r, 0, "ok", data)
 }
 
