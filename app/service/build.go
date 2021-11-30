@@ -31,7 +31,7 @@ func (s *buildService) Start(req *model.BuildApiReq) (string, error) {
 	buildLogRes.Struct(&buildLog)
 
 	formatTime := "2006-01-02 15:04:05"
-	m, _ := time.ParseDuration("2m")
+	m, _ := time.ParseDuration("10m")
 	nowTime, _ := time.Parse(formatTime, time.Now().Format(formatTime))
 	createAt, _ := time.Parse(formatTime, buildLog.CreatedAt)
 	createAt2Minute := createAt.Add(m)
