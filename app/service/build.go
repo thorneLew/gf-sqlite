@@ -2,6 +2,7 @@ package service
 
 import (
 	"errors"
+	"fmt"
 	"project-build/app/dao"
 	"project-build/app/model"
 	"project-build/app/utils"
@@ -15,14 +16,14 @@ var Build = buildService{}
 
 type buildService struct{}
 
-func (s *buildService) Start(req *model.BuildApiReq) (string, error) {
+func (s *buildService) Start(reqData *model.BuildApiReq) (string, error) {
 	var proj *model.Project
 	var buildLog *model.BuildLogs
-	data, err := dao.Project.One(req)
+	data, err := dao.Project.One(reqData)
 	if err != nil {
 		return "", err
 	}
-	buildLogRes, buildLogErr := dao.BuildLogs.OrderDesc("created_at").Where(g.Map{"project_id": req.Id}).One()
+	buildLogRes, buildLogErr := dao.BuildLogs.OrderDesc("created_at").Where(g.Map{"project_id": reqData.Id}).One()
 
 	if buildLogErr != nil {
 		return "", buildLogErr
@@ -31,14 +32,19 @@ func (s *buildService) Start(req *model.BuildApiReq) (string, error) {
 	buildLogRes.Struct(&buildLog)
 
 	formatTime := "2006-01-02 15:04:05"
-	m, _ := time.ParseDuration("10m")
-	nowTime, _ := time.Parse(formatTime, time.Now().Format(formatTime))
-	createAt, _ := time.Parse(formatTime, buildLog.CreatedAt)
-	createAt2Minute := createAt.Add(m)
-	isOverTime := nowTime.Before(createAt2Minute)
+	m, mErr := time.ParseDuration("10m")
+	if mErr != nil {
+		return "", mErr
+	}
 
-	if isOverTime && buildLog.Status == "0" {
-		return "", errors.New("此项目正在打包中！")
+	if buildLog != nil {
+		nowTime, _ := time.Parse(formatTime, time.Now().Format(formatTime))
+		createAt, _ := time.Parse(formatTime, buildLog.CreatedAt)
+		createAt2Minute := createAt.Add(m)
+		isOverTime := nowTime.Before(createAt2Minute)
+		if isOverTime && buildLog.Status == "0" {
+			return "", errors.New("此项目正在打包中！")
+		}
 	}
 
 	data.Struct(&proj)
@@ -50,8 +56,9 @@ func (s *buildService) Start(req *model.BuildApiReq) (string, error) {
 	lastInsertId, _ := currRow.LastInsertId()
 
 	strId := strconv.Itoa(int(lastInsertId))
-	inWrokPath := "cd " + proj.Path + "&& pwd" + "&& " + proj.Cmd
-	go utils.Command(inWrokPath, "build", strId, func() {
+	inWorkPath := "cd " + proj.Path + "&& pwd" + "&& " + proj.Cmd
+	fmt.Println(inWorkPath, "inWorkPath")
+	go utils.Command(inWorkPath, "build", strId, func() {
 		dao.BuildLogs.Update(g.Map{"Status": 1}, "id", int(lastInsertId))
 	})
 	return strId, nil
