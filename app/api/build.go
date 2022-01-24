@@ -42,7 +42,8 @@ func (*buildApi) Index(r *ghttp.Request) {
 	var (
 		data *model.BuildApiReq
 	)
-	if err := r.Parse(&data); err != nil {
+
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 

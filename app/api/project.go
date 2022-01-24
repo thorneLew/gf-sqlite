@@ -30,7 +30,7 @@ func (*projectApi) List(r *ghttp.Request) {
 // @router  /api/project/info [GET]
 // @success 200 {object} response.JsonResponse "执行结果"
 func (*projectApi) Info(r *ghttp.Request) {
-	id := r.GetInt("id")
+	id := r.GetQuery("id")
 	data, _ := dao.Project.One("id", id)
 	response.JsonExit(r, 0, "ok", data)
 }

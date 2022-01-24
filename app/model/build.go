@@ -2,7 +2,7 @@ package model
 
 // 查询id
 type BuildApiReq struct {
-	Id string `v:"required"`
+	Id string `v:"required" json:"id"`
 }
 
 type BuildListApiReq struct {
