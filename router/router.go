@@ -23,9 +23,11 @@ func init() {
 		group.ALL("/login", api.Auth.LoginHandler)
 		group.ALL("/refresh_token", api.Auth.RefreshHandler)
 		group.ALL("/logout", api.Auth.LogoutHandler)
+		group.ALL("/build/info", api.Build.Info)
 		group.Middleware(service.Middleware.CORS, middlewareAuth)
 		group.ALL("/check", api.Check)
 		group.ALL("/project", api.Project)
-		group.ALL("/build", api.Build)
+		group.ALL("/build/", api.Build.Index)
+		group.ALL("/build/list", api.Build.List)
 	})
 }
