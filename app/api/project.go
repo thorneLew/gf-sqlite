@@ -45,7 +45,7 @@ func (*projectApi) Index(r *ghttp.Request) {
 	var (
 		data *model.ProjectApiReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := service.Project.Create(data); err != nil {
@@ -65,9 +65,10 @@ func (*projectApi) Update(r *ghttp.Request) {
 	var (
 		data *model.ProjectUpdateApiReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseForm(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
+
 	if err := service.Project.Update(data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	} else {
@@ -85,7 +86,7 @@ func (*projectApi) Delete(r *ghttp.Request) {
 	var (
 		data *model.ProjectUpdateApiReq
 	)
-	if err := r.Parse(&data); err != nil {
+	if err := r.ParseQuery(&data); err != nil {
 		response.JsonExit(r, 1, err.Error())
 	}
 	if err := service.Project.Delete(data); err != nil {
