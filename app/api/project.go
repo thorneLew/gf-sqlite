@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"project-build/app/dao"
 	"project-build/app/model"
 	"project-build/app/service"
@@ -32,6 +33,7 @@ func (*projectApi) List(r *ghttp.Request) {
 func (*projectApi) Info(r *ghttp.Request) {
 	id := r.GetQuery("id")
 	data, _ := dao.Project.One("id", id)
+	fmt.Print("=====q1111")
 	response.JsonExit(r, 0, "ok", data)
 }
 

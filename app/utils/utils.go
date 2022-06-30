@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"os/exec"
 	"strings"
@@ -13,8 +14,10 @@ import (
 
 func Command(cmd string, model string, filename string, f func()) error {
 	logger := CmdLog(model, filename+".log")
+	fmt.Println("父 协程 开始...")
 	//c := exec.Command("cmd", "/C", cmd) 	// windows
 	c := exec.Command("bash", "-c", cmd) // mac or linux
+	// c.SysProcAttr = &syscall.SysProcAttr{Setpgid: false}
 	stdout, err := c.StdoutPipe()
 	if err != nil {
 		return err
@@ -38,6 +41,12 @@ func Command(cmd string, model string, filename string, f func()) error {
 	}()
 	err = c.Start()
 	wg.Wait()
+	if err := c.Process.Kill(); err != nil {
+		return err
+	}
+	if err := c.Wait(); err != nil { //避免僵尸进程
+		return err
+	}
 	f()
 	logger.Println(TASKEND)
 	return err

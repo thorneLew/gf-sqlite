@@ -84,6 +84,7 @@ func (*buildApi) Info(r *ghttp.Request) {
 
 	for {
 		msgType, msg, err := ws.ReadMessage()
+
 		if err != nil {
 			fmt.Print(err.Error())
 			return
